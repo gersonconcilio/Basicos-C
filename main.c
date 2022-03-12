@@ -1,81 +1,90 @@
 #include<stdio.h>
 #include<stdlib.h>
-#define TAM 11
+#include<string.h>
+#define TAM 20
 
-void popula(int mat[TAM][TAM]);
-void lista(int mat[TAM][TAM]);
-int soma(int mat[TAM][TAM]);
+int cadastra(char n[TAM][100], char e[TAM][100], int cont);
+void lista(char n[TAM][100], char e[TAM][100], int cont);
+void consulta(char n[TAM][100], char e[TAM][100], int cont);
 
 int main(void){
 	
 	int menu=143;
-	int flag = 0;
-	int mat[TAM][TAM];
+	int flag=0;
+	int num_contatos=0;
+	char nome[TAM][100];
+	char email[TAM][100];
 	
 	do{
-		printf("\n-------------------------------");
-		printf("\n[1] Popular Matriz.");
-		printf("\n[2] Listar Matriz.");
-		printf("\n[3] Somar Diagonal Principal.");
+		printf("\n--------------------------");
+		printf("\n[1] Cadastro de Contato.");
+		printf("\n[2] Lista de Contatos.");
+		printf("\n[3] Consulta por Nome.");
 		printf("\n[4] Sair.");
-		printf("\n-------------------------------");
+		printf("\n--------------------------");
 		printf("\nDigite: ");
 			scanf("%i", &menu);
+			
 		switch(menu){
 			case 1:
-				popula(mat);
+				num_contatos = cadastra(nome, email, num_contatos);
 				flag=1;
 			break;
 			case 2:
 				if(flag)
-					lista(mat);
+					lista(nome, email, num_contatos);
 				else
-					printf("\nMatriz nao populada!!!\n");
+					printf("\nAgenda nao Inicializada!!!");
 			break;
 			case 3:
-				if(flag){
-					printf("\nA soma dos elementos da diagonal principal eh: %i", soma(mat));
-				}					
+				if(flag)
+					consulta(nome, email, num_contatos);
 				else
-					printf("\nMatriz nao populada!!!\n");
+					printf("\nAgenda nao Inicializada!!!");
 			break;
 			case 4:
 				printf("\nSaiu do Programa!!!\n");
 			break;
 			default:
-				printf("\nValor Invalido!!\nDigite Novamente!!\n");
+				printf("\nValor Invalido!!!\nDigite outro Valor!!!\n");
 		}
-	}while(menu != 4);	
+	}while(menu!=4);	
 return 0;
 }
 
-void popula(int mat[TAM][TAM]){
-	int i, j;	
-	for(i=0;i<TAM;i++){
-		for(j=0;j<TAM;j++){
-			printf("\nDigite para mat[%i][%i]: ", i, j);
-				scanf("%i", &mat[i][j]);
-		}
-	}
+int cadastra(char n[TAM][100], char e[TAM][100], int cont){
+	printf("\nDigite o nome: ")	;
+		scanf("%s", n[cont]);
+	printf("Digite o email: ");
+		scanf("%s", e[cont]);
+return ++cont;
 }
 
-void lista(int mat[TAM][TAM]){
-	int i, j;	
-	printf("\n--------LISTANDO MATRIZ--------\n\n");
-	for(i=0;i<TAM;i++){
-		for(j=0;j<TAM;j++){
-			printf("%i\t", mat[i][j]);
-		}
-		printf("\n");
+void lista(char n[TAM][100], char e[TAM][100], int cont){
+	int i, j, k;
+	k=1;
+	printf("\n-----------APRESENTANDO CONTATOS-----------\n");
+	for(i=0;i<cont;i++){		
+		printf("\nContato numero %i: ----", k);
+		printf("\nNome: %s", n[i]);
+		printf("\nEmail: %s\n", e[i]);
+		k++;
 	}
 }
-
-int soma(int mat[TAM][TAM]){
-	int i, j;
-	int soma=0;
-	for(i=0;i<TAM;i++)
-		for(j=0;j<TAM;j++)
-			if(i==j)
-				soma += mat[i][j];
-return soma;
+void consulta(char n[TAM][100], char e[TAM][100], int cont){
+	char nome[100];
+	int i, aux;
+	aux=-1;
+	printf("\nDigite o nome: ");
+		scanf("%s", nome);
+	for(i=0;i<cont;i++){		
+		if(strcmp(n[i], nome)==0)
+			aux=i;
+	}
+	if(aux > -1){
+		printf("\nNome: %s", n[aux]);
+		printf("\nEmail: %s\n", e[aux]);
+	}
+	else
+		printf("\nContato nao cadastrado!!\n");
 }
